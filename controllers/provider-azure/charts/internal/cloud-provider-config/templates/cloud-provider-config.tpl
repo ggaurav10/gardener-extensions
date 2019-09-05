@@ -1,11 +1,11 @@
 {{- define "cloud-provider-config"}}
 cloud: AZUREPUBLICCLOUD
-loadBalancerSku: standard
 location: "{{ .Values.region }}"
 primaryAvailabilitySetName: "{{ .Values.availabilitySetName }}"
 resourceGroup: "{{ .Values.resourceGroup }}"
 routeTableName: "{{ .Values.routeTableName }}"
 securityGroupName: "{{ .Values.securityGroupName }}"
+loadBalancerSku: "{{ .Values.loadBalancerSku }}"
 subnetName: "{{ .Values.subnetName }}"
 vnetName: "{{ .Values.vnetName }}"
 cloudProviderBackoff: true
