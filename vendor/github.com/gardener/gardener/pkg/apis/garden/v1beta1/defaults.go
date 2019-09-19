@@ -124,13 +124,22 @@ func SetDefaults_Shoot(obj *Shoot) {
 	}
 
 	trueVar := true
+	falseVar := false
 	if obj.Spec.Kubernetes.AllowPrivilegedContainers == nil {
 		obj.Spec.Kubernetes.AllowPrivilegedContainers = &trueVar
 	}
 
 	if obj.Spec.Kubernetes.KubeAPIServer != nil {
 		if obj.Spec.Kubernetes.KubeAPIServer.EnableBasicAuthentication == nil {
-			obj.Spec.Kubernetes.KubeAPIServer.EnableBasicAuthentication = &trueVar
+			k8sVersionLessThan116, _ := utils.CompareVersions(obj.Spec.Kubernetes.Version, "<", "1.16")
+			// Error is ignored here because we cannot do anything meaningful with it.
+			// k8sVersionLessThan116 will default to `false`.
+
+			if k8sVersionLessThan116 {
+				obj.Spec.Kubernetes.KubeAPIServer.EnableBasicAuthentication = &trueVar
+			} else {
+				obj.Spec.Kubernetes.KubeAPIServer.EnableBasicAuthentication = &falseVar
+			}
 		}
 	}
 
